@@ -1,10 +1,10 @@
 #include "Hypfit.h"
 
 Hypfit::Hypfit(){
-  map_PhysdEdx[13] = new BetheBloch(13);
-  map_PhysdEdx[211] = new BetheBloch(211);
-  map_PhysdEdx[321] = new BetheBloch(321);
-  map_PhysdEdx[2212] = new BetheBloch(2212);
+  map_PhysdEdx[13] = new PhysdEdx(13); // == muon
+  map_PhysdEdx[211] = new PhysdEdx(211); // == charged pion
+  map_PhysdEdx[321] = new PhysdEdx(321); // == charged kaon
+  map_PhysdEdx[2212] = new PhysdEdx(2212); // == proton
 }
 
 Hypfit::~Hypfit(){
@@ -47,8 +47,8 @@ double Hypfit::Gaussian(const vector<double> & dEdx, const vector<double> & ResR
     double this_chi2 = 0.;
     for(int j = N_skip; j < this_N_hits - N_skip; j++){ // == Do not use first and last N_skip hits
       double this_res_length = ResRange.at(j) + this_additional_res_length;
-      double this_KE = map_BB[PID]->KEFromRangeSpline(this_res_length);
-      double dEdx_theory = map_BB[PID]->meandEdx(this_KE);
+      double this_KE = map_PhysdEdx[PID]->KEFromRangeSpline(this_res_length);
+      double dEdx_theory = map_PhysdEdx[PID]->meandEdx(this_KE);
       double dEdx_measured = dEdx.at(j);
       if(dEdx_measured < dEdx_truncate_bellow || dEdx_measured > dEdx_truncate_upper) continue; // == Truncate
       // == Gaussian approx.
@@ -77,7 +77,7 @@ double Hypfit::Gaussian(const vector<double> & dEdx, const vector<double> & ResR
     return -5555.;
   }
 
-  double best_KE = map_BB[PID] -> KEFromRangeSpline(best_total_res_length);
+  double best_KE = map_PhysdEdx[PID] -> KEFromRangeSpline(best_total_res_length);
   return best_KE;
 }
 
@@ -119,13 +119,13 @@ double Hypfit::Likelihood(const vector<double> & dEdx, const vector<double> & Re
     double this_m2lnL = 0.;
     for(int j = N_skip; j < this_N_hits - N_skip; j++){ // == Do not use first and last N_skip this
       double this_res_length = ResRange.at(j) + this_additional_res_length;
-      double this_KE = map_BB[PID]->KEFromRangeSpline(this_res_length);
+      double this_KE = map_PhysdEdx[PID]->KEFromRangeSpline(this_res_length);
       double dEdx_measured = dEdx.at(j);
       if(dEdx_measured < dEdx_truncate_bellow || dEdx_measured > dEdx_truncate_upper) continue; // == Truncate
       // == Likelihood
       double this_pitch = fabs(ResRange.at(j - 1) - ResRange.at(j + 1)) / 2.0;
-      double this_likelihood = map_BB[PID] -> dEdx_PDF(this_KE, this_pitch, dEdx_measured);
-      if(this_likelihood > 1e-6)this_m2lnL += (-2.0) * log(this_likelihood);
+      double this_likelihood = map_PhysdEdx[PID] -> dEdx_PDF(this_KE, this_pitch, dEdx_measured);
+      if(this_likelihood > 1e-6) this_m2lnL += (-2.0) * log(this_likelihood);
     }
     if(this_m2lnL < best_m2lnL){
       best_m2lnL = this_m2lnL;
@@ -144,14 +144,11 @@ double Hypfit::Likelihood(const vector<double> & dEdx, const vector<double> & Re
   if(i_bestfit == res_length_trial - 1){ // == Fit failed : no mimumum
     return -7777.;
   }
-  else if(best_m2lnL > 99990.){ // == Fit failed : best_chi2 > 99990.
+  else if(best_m2lnL > 99990.){ // == Fit failed : best likelihood > 99990.
     return -6666.;
-  }
-  else if(best_m2lnL < 1.0e-11){ // == Fit failed : best_chi2 < 1.0e-11
-    return -5555.;
   }
 
   // == Return
-  double best_KE = map_BB[PID] -> KEFromRangeSpline(best_total_res_length);
+  double best_KE = map_PhysdEdx[PID] -> KEFromRangeSpline(best_total_res_length);
   return best_KE;
 }
