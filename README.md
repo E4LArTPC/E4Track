@@ -7,7 +7,7 @@ Energy measurement functions for track objects
 
 Functions for Landau-Vavilov theory.  
 This class is valid for muons, charged pions, charged kaons and protons.  
-Call this class wiht valid PdgID numbers.  
+Call this class with valid PdgID numbers.  
 
 - Muons: 13
 - Charged pions: 211
