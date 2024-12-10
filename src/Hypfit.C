@@ -147,6 +147,9 @@ double Hypfit::Likelihood(const vector<double> & dEdx, const vector<double> & Re
   else if(best_m2lnL > 99990.){ // == Fit failed : best likelihood > 99990.
     return -6666.;
   }
+  else if(fabs(best_m2lnL) < 1.0e-11){ // == Fit failed : |best_m2lnL| < 1.0e-11, no valid likelihood value
+    return -5555.;
+  }
 
   // == Return
   double best_KE = map_PhysdEdx[PID] -> KEFromRangeSpline(best_total_res_length);
