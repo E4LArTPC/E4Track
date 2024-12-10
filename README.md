@@ -23,3 +23,25 @@ Some notes,
 - Residual range and dE/dx vectors should be ordered that the first elements must be for the hit with the shortest residual range.
 - Functions are valid for muons, charged pions, charged kaons and protons.
 - Tunable parameters are defined in the header.
+
+## Compile and test
+
+### Clone this repository and compile
+
+This repository should work well at dunegpvm servers.
+```
+git clone git@github.com:E4LArTPC/E4Track.git
+cd E4Track
+source setup.sh
+mkdir build
+cd build
+cmake ..
+cmake --build . -- install
+```
+
+### Test
+
+```
+cd ..
+root -l -b -q run_test.C
+```
