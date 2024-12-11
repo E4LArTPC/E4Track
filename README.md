@@ -16,7 +16,8 @@ Call this class with valid PdgID numbers.
 
 ### Hypfit
 
-Functions for the hypothetical track-length fitting method. This class uses the PhysdEdx class.  
+Functions for the hypothetical track-length fitting method, arXiv:2409.18288.  
+This class uses the PhysdEdx class.  
 
 Inputs are residual range vector, dE/dx vector and PdgID.  
 Some notes,  
