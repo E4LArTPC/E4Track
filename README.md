@@ -5,7 +5,7 @@ Energy measurement functions for track objects
 
 ### PhysdEdx
 
-Functions for Landau-Vavilov theory.  
+Functions for Landau-Vavilov theory based on ROOT's Math classes for Vavilov and Landau distributions.  
 This class is valid for muons, charged pions, charged kaons and protons.  
 Call this class with valid PdgID numbers.  
 
