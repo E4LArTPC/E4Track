@@ -21,6 +21,7 @@ set_target_properties(E4Track PROPERTIES
 target_link_libraries(E4Track
 PUBLIC
   ${ROOT_LIBRARIES}
+  ROOT::MathMore
 )
 
 install(TARGETS E4Track

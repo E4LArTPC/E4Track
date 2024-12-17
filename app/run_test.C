@@ -1,4 +1,4 @@
-#include "./src/Hypfit.h"
+#include "src/Hypfit.h"
 
 void run_test(){
 
@@ -16,4 +16,9 @@ void run_test(){
   cout << "proton KE(rr = 30 cm): " << proton_dedx -> KEFromRangeSpline(30.) << endl;
   cout << "test_p_likelihood_KE: " << test_p_likelihood_KE << endl;
   cout << "test_p_gaus_KE: " << test_p_gaus_KE << endl;
+}
+
+int main() {
+  run_test();
+  return 0;
 }
