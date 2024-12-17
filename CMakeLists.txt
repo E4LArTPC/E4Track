@@ -26,3 +26,4 @@ include_directories(${ROOT_INCLUDE_DIRS})
 
 # add sub directories
 add_subdirectory(src)
+add_subdirectory(app)
